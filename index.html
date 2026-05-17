@@ -19,7 +19,6 @@
             flex-direction: column;
         }
 
-        /* The Page Workspace */
         .editor-container {
             flex: 1;
             width: 100%;
@@ -37,7 +36,6 @@
             color: #bbb;
         }
 
-        /* Floating + Action Button */
         .fab-button {
             position: fixed;
             bottom: 25px;
@@ -63,7 +61,6 @@
             background-color: #ff3b30;
         }
 
-        /* Mobile Options Menu popup */
         .options-menu {
             position: fixed;
             bottom: 95px;
@@ -83,7 +80,6 @@
             display: flex;
         }
 
-        /* Rows inside the menu */
         .menu-row {
             display: flex;
             justify-content: space-between;
@@ -109,7 +105,6 @@
             text-align-last: center;
         }
         
-        /* Highlight colors for specific buttons */
         .btn-upload {
             background-color: #34c759 !important;
             color: white !important;
@@ -131,25 +126,25 @@
 
     <div class="options-menu" id="optionsMenu" onclick="event.stopPropagation()">
         <div class="menu-row">
-            <button onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()" onclick="format('bold')"><b>B</b></button>
-            <button onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()" onclick="format('italic')"><i>I</i></button>
-            <button onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()" onclick="format('underline')"><u>U</u></button>
+            <button onmousedown="event.preventDefault()" onclick="format('bold')"><b>B</b></button>
+            <button onmousedown="event.preventDefault()" onclick="format('italic')"><i>I</i></button>
+            <button onmousedown="event.preventDefault()" onclick="format('underline')"><u>U</u></button>
         </div>
 
         <div class="menu-row">
-            <button onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()" onclick="format('justifyLeft')">Left</button>
-            <button onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()" onclick="format('justifyCenter')">Center</button>
-            <button onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()" onclick="format('justifyRight')">Right</button>
+            <button onmousedown="event.preventDefault()" onclick="format('justifyLeft')">Left</button>
+            <button onmousedown="event.preventDefault()" onclick="format('justifyCenter')">Center</button>
+            <button onmousedown="event.preventDefault()" onclick="format('justifyRight')">Right</button>
         </div>
 
         <div class="menu-row">
-            <select onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()" onchange="format('fontSize', this.value); this.selectedIndex=0;">
+            <select onmousedown="event.preventDefault()" onchange="format('fontSize', this.value); this.selectedIndex=0;">
                 <option value="" disabled selected>Size</option>
                 <option value="3">Normal</option>
                 <option value="5">Large</option>
                 <option value="7">Huge</option>
             </select>
-            <select onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()" onchange="format('fontName', this.value); this.selectedIndex=0;">
+            <select onmousedown="event.preventDefault()" onchange="format('fontName', this.value); this.selectedIndex=0;">
                 <option value="" disabled selected>Style</option>
                 <option value="Arial">Arial</option>
                 <option value="Georgia">Georgia</option>
@@ -159,12 +154,12 @@
         </div>
 
         <div class="menu-row">
-            <button onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()" onclick="format('insertUnorderedList')">• List</button>
-            <button onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()" onclick="triggerImageUpload()" class="btn-upload">📷 Image</button>
+            <button onmousedown="event.preventDefault()" onclick="format('insertUnorderedList')">• List</button>
+            <button onmousedown="event.preventDefault()" onclick="triggerImageUpload()" class="btn-upload">📷 Image</button>
         </div>
 
         <div class="menu-row">
-            <button onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()" onclick="downloadPDF()" class="btn-pdf">📄 Download PDF</button>
+            <button onmousedown="event.preventDefault()" onclick="downloadPDF()" class="btn-pdf">📄 Download PDF</button>
         </div>
     </div>
 
@@ -174,14 +169,12 @@
         const editor = document.getElementById('editor');
         const imageInput = document.getElementById('imageInput');
 
-        // Toggle the menu visual state
         function toggleMenu(event) {
             event.stopPropagation();
             const isOpen = optionsMenu.classList.toggle('show');
             fabBtn.classList.toggle('active', isOpen);
         }
 
-        // Run the chosen text format rule
         function format(command, value = null) {
             document.execCommand(command, false, value);
             closeMenu();
@@ -192,13 +185,11 @@
             fabBtn.classList.remove('active');
         }
 
-        // Close menu if user taps back onto the screen text sheet
         document.addEventListener('click', () => {
             closeMenu();
         });
 
         // --- IMAGE UPLOAD LOGIC ---
-
         function triggerImageUpload() {
             imageInput.click();
             closeMenu();
@@ -237,27 +228,23 @@
 
         // --- PDF DOWNLOAD LOGIC ---
         function downloadPDF() {
-            closeMenu(); // Hide the menu so it doesn't get in the way
+            closeMenu(); 
             
-            // Get the HTML content from the editor
             const element = document.getElementById('editor');
             
-            // Check if the editor is basically empty before printing
             if (element.innerText.trim() === '' && element.innerHTML.indexOf('<img') === -1) {
                 alert("Please add some content before downloading.");
                 return;
             }
 
-            // Options for the PDF generation
             const opt = {
-                margin:       0.5, // 0.5 inch margins
+                margin:       0.5,
                 filename:     'My_Document.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2 }, // Higher scale for better resolution
+                html2canvas:  { scale: 2 }, 
                 jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
             };
 
-            // Generate and download the PDF
             html2pdf().set(opt).from(element).save();
         }
     </script>
